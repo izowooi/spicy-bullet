@@ -1,2 +1,2 @@
-# jelly-jump
-jelly jump
+# spicy-bullet
+spicy-bullet
