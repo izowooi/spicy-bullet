@@ -10,12 +10,15 @@ public class Player : MonoBehaviour
     private Vector2 inputVector2;
     [SerializeField]
     private float speed = 5f;
-
+    private SpriteRenderer spriteRenderer;
     private Rigidbody2D rigidbody2D;
+    private Animator animator;
 
     private void Awake()
     {
         rigidbody2D = GetComponent<Rigidbody2D>();
+        spriteRenderer = GetComponent<SpriteRenderer>();
+        animator = GetComponent<Animator>();
     }
     
     private void FixedUpdate()
@@ -28,9 +31,15 @@ public class Player : MonoBehaviour
         inputVector2 = value.Get<Vector2>();
     }
 
-    //왼쪽으로 이동할 때에는 SpriteRenderer의 flipX를 true로 설정
     private void LateUpdate()
     {
+        animator.SetFloat("Speed", inputVector2.magnitude);
         
+        spriteRenderer.flipX = inputVector2.x switch
+        {
+            < 0 => true,
+            > 0 => false,
+            _ => spriteRenderer.flipX
+        };
     }
 }
