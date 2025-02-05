@@ -2,6 +2,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.InputSystem;
 
 public class Player : MonoBehaviour
 {
@@ -16,16 +17,20 @@ public class Player : MonoBehaviour
     {
         rigidbody2D = GetComponent<Rigidbody2D>();
     }
-
-    // Update is called once per frame
-    void Update()
-    {
-        inputVector2.x = Input.GetAxisRaw("Horizontal");
-        inputVector2.y = Input.GetAxisRaw("Vertical");
-    }
     
     private void FixedUpdate()
     {
-        rigidbody2D.MovePosition(rigidbody2D.position + ( speed * Time.fixedDeltaTime * inputVector2.normalized ) );
+        rigidbody2D.MovePosition(rigidbody2D.position + ( speed * Time.fixedDeltaTime * inputVector2 ) );
+    }
+    
+    void OnMove(InputValue value)
+    {
+        inputVector2 = value.Get<Vector2>();
+    }
+
+    //왼쪽으로 이동할 때에는 SpriteRenderer의 flipX를 true로 설정
+    private void LateUpdate()
+    {
+        
     }
 }
