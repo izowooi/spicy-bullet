@@ -6,8 +6,7 @@ using UnityEngine.InputSystem;
 
 public class Player : MonoBehaviour
 {
-    [SerializeField]
-    private Vector2 inputVector2;
+    public Vector2 inputVector2;
     [SerializeField]
     private float speed = 5f;
     private SpriteRenderer spriteRenderer;
