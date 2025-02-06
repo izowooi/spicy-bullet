@@ -1,7 +1,16 @@
+using System;
 using UnityEngine;
+using Random = UnityEngine.Random;
 
 public class Reposition : MonoBehaviour
 {
+    Collider2D collider2D;
+
+    private void Awake()
+    {
+        collider2D = GetComponent<Collider2D>();
+    }
+
     private void OnTriggerExit2D(Collider2D other)
     {
         if (other.CompareTag("Area") == false)
@@ -18,17 +27,22 @@ public class Reposition : MonoBehaviour
 
         switch (transform.tag)
         {
-            case "Ground":
+            case GameConstants.Tags.Ground:
                 if (diffX > diffY)
                 {
-                    transform.Translate(Vector3.right * directionX * 40);
+                    transform.Translate(Vector3.right * directionX * GameConstants.DoubleMapSize);
                 }
                 else if (diffX < diffY)
                 {
-                    transform.Translate(Vector3.up * directionY * 40);
+                    transform.Translate(Vector3.up * directionY * GameConstants.DoubleMapSize);
                 }
                 break;
-            case "Enemy":
+            case GameConstants.Tags.Enemy:
+                if (collider2D.enabled)
+                {
+                    transform.Translate(playerDirection * GameConstants.MapSize +
+                                        new Vector3(Random.Range(-3f, 3f), Random.Range(-3f, 3f), 0));
+                }
                 break;
         }
 
