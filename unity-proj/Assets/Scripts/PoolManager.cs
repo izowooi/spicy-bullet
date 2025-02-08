@@ -26,6 +26,10 @@ public class PoolManager : MonoBehaviour
     {
         GameObject select = null;
 
+        if(index >= pool.Length)
+        {
+            Debug.LogError($"Index out of range, index: {index}, pool length: {pool.Length}");
+        }
         foreach (var item in pool[index])
         {
             if (item.activeSelf == false)

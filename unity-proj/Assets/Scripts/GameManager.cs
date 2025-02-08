@@ -1,9 +1,13 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Serialization;
 
 public class GameManager : MonoBehaviour
 {
+    public float gametime = 0f;
+    float maxTime = 20f;
     public Player player;
     public PoolManager poolManager;
     
@@ -16,15 +20,9 @@ public class GameManager : MonoBehaviour
             Instance = this;
         }
     }
-    // Start is called before the first frame update
-    void Start()
-    {
-        
-    }
 
-    // Update is called once per frame
-    void Update()
+    private void Update()
     {
-        
+        gametime += Time.deltaTime;
     }
 }
