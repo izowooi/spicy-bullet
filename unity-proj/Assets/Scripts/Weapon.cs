@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -10,7 +11,14 @@ public class Weapon : MonoBehaviour
     public float damage;
     public float count;
     public float speed;
-    // Start is called before the first frame update
+    public float intervalFire;
+    Player player;
+
+    private void Awake()
+    {
+        player = GetComponentInParent<Player>();
+    }
+
     void Start()
     {
         Initialize();
@@ -34,10 +42,12 @@ public class Weapon : MonoBehaviour
                 PlaceWeapon();
                 break;
             default:
+                intervalFire = 0.3f;
                 break;
         }
     }
 
+    private float timer = 0f;
     void Update()
     {
         switch (id)
@@ -46,6 +56,12 @@ public class Weapon : MonoBehaviour
                 transform.Rotate(speed * Time.deltaTime * Vector3.back);
                 break;
             default:
+                timer += Time.deltaTime;
+                if (timer > intervalFire)
+                {
+                    timer = 0;
+                    Fire();
+                }
                 break;
         }
         
@@ -74,8 +90,22 @@ public class Weapon : MonoBehaviour
             bullet.Rotate(rotation);
             bullet.Translate(bullet.up * 1.5f, Space.World);
             
-            bullet.GetComponent<Bullet>().Init(damage, -1); // -1 is Infinite Penetration
+            bullet.GetComponent<Bullet>().Init(damage, -1, Vector3.zero); // -1 is Infinite Penetration
         }
+    }
+
+    void Fire()
+    {
+        if (player.scanner.nearestTarget == false)
+            return;
         
+        Vector3 targetPos = player.scanner.nearestTarget.position;
+        Vector3 direction = (targetPos - transform.position).normalized;
+        
+        Transform bullet = GameManager.Instance.poolManager.Get(prefabId).transform;
+        bullet.position = transform.position;
+        
+        bullet.rotation = Quaternion.FromToRotation(Vector3.up, direction);
+        bullet.GetComponent<Bullet>().Init(damage, count, direction);
     }
 }
