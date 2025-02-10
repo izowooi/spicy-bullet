@@ -14,6 +14,8 @@ public class Enemy : MonoBehaviour
     private Rigidbody2D rigidbody2D;
     private SpriteRenderer spriteRenderer;
     Animator animator;
+    WaitForFixedUpdate waitForFixedUpdate = new WaitForFixedUpdate();
+    
     private void Awake()
     {
         rigidbody2D = GetComponent<Rigidbody2D>();
@@ -23,7 +25,7 @@ public class Enemy : MonoBehaviour
 
     private void FixedUpdate()
     {
-        if (isLive == false)
+        if (isLive == false || animator.GetCurrentAnimatorStateInfo(0).IsName("Hit"))
             return;
         
         Vector2 direction = (target.position - rigidbody2D.position).normalized;
@@ -59,10 +61,23 @@ public class Enemy : MonoBehaviour
             return;
         Bullet bullet = other.GetComponent<Bullet>();
         health -= bullet.damage;
-        if (health <= 0)
+        StartCoroutine(Knockback());
+        if (health > 0)
+        {
+            animator.SetTrigger("Hit");
+        }
+        else
         {
             Dead();
         }
+    }
+
+    IEnumerator Knockback()
+    {
+        yield return waitForFixedUpdate;
+        Vector3 playerPosition = GameManager.Instance.player.transform.position;
+        Vector3 direction = (transform.position - playerPosition).normalized;
+        rigidbody2D.AddForce(direction * 3f, ForceMode2D.Impulse);
     }
     
     void Dead()
