@@ -10,6 +10,7 @@ public class Enemy : MonoBehaviour
     public float maxHealth = 100f;
     public RuntimeAnimatorController[] animators;
     public Rigidbody2D target;
+    Collider2D collider2D;
     bool isLive;
     private Rigidbody2D rigidbody2D;
     private SpriteRenderer spriteRenderer;
@@ -19,6 +20,7 @@ public class Enemy : MonoBehaviour
     private void Awake()
     {
         rigidbody2D = GetComponent<Rigidbody2D>();
+        collider2D = GetComponent<Collider2D>();
         spriteRenderer = GetComponent<SpriteRenderer>();
         animator = GetComponent<Animator>();
     }
@@ -45,6 +47,11 @@ public class Enemy : MonoBehaviour
         target = GameManager.Instance.player.rigidbody2D;
         isLive = true;
         health = maxHealth;
+        collider2D.enabled = true;
+        rigidbody2D.simulated = true;
+        spriteRenderer.sortingOrder = 2;
+        animator.SetBool("Dead", false);
+
     }
     
     public void Initialize(SpawnData data)
@@ -57,7 +64,7 @@ public class Enemy : MonoBehaviour
 
     private void OnTriggerEnter2D(Collider2D other)
     {
-        if (other.CompareTag("Bullet") == false)
+        if (other.CompareTag("Bullet") == false || isLive == false)
             return;
         Bullet bullet = other.GetComponent<Bullet>();
         health -= bullet.damage;
@@ -68,7 +75,14 @@ public class Enemy : MonoBehaviour
         }
         else
         {
-            Dead();
+            isLive = false;
+            collider2D.enabled = false;
+            rigidbody2D.simulated = false;
+            spriteRenderer.sortingOrder = 1;
+            animator.SetBool("Dead", true);
+            animator.SetTrigger("Hit");
+            GameManager.Instance.kill++;
+            GameManager.Instance.GetExp(1);
         }
     }
 
