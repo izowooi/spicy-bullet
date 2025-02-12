@@ -8,7 +8,7 @@ public class GameManager : MonoBehaviour
 {
     [Header(("게임 정보"))]
     public float gametime = 0f;
-    float maxTime = 20f;
+    public float maxTime = 20f;
     
     [Header(("플레이어 정보"))]
     public int level;

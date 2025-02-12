@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -9,12 +10,12 @@ public class HUD : MonoBehaviour
     public enum InfoType { Level, Kill, Exp, Time, Health }
     public InfoType infoType;
     
-    Text myText;
+    TextMeshProUGUI myText;
     Slider mySlider;
     
     private void Awake()
     {
-        myText = GetComponent<Text>();
+        myText = GetComponent<TextMeshProUGUI>();
         mySlider = GetComponent<Slider>();
     }
 
@@ -31,6 +32,13 @@ public class HUD : MonoBehaviour
                 myText.text = $"Lv.{GameManager.Instance.level:F0}";
                 break;
             case InfoType.Kill:
+                myText.text = $"{GameManager.Instance.kill:F0}";
+                break;
+            case InfoType.Time:
+                float remainTime = GameManager.Instance.maxTime - GameManager.Instance.gametime;
+                var min = (int)remainTime / 60;
+                var sec = (int)remainTime % 60;
+                myText.text = $"{min:D2}:{sec:D2}";
                 break;
                 
         }
