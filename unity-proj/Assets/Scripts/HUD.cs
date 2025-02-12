@@ -40,6 +40,11 @@ public class HUD : MonoBehaviour
                 var sec = (int)remainTime % 60;
                 myText.text = $"{min:D2}:{sec:D2}";
                 break;
+            case InfoType.Health:
+                var currentHealth = GameManager.Instance.health;
+                var maxHeath = GameManager.Instance.maxHealth;
+                mySlider.value = (float)currentHealth / maxHeath;
+                break;
                 
         }
     }

@@ -11,6 +11,8 @@ public class GameManager : MonoBehaviour
     public float maxTime = 20f;
     
     [Header(("플레이어 정보"))]
+    public float maxHealth = 100;
+    public float health = 100;
     public int level;
     public int kill;
     public int exp;
