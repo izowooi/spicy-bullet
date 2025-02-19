@@ -16,12 +16,7 @@ public class Weapon : MonoBehaviour
 
     private void Awake()
     {
-        player = GetComponentInParent<Player>();
-    }
-
-    void Start()
-    {
-        Initialize();
+        player = GameManager.Instance.player;
     }
 
     public void LevelUp(float damage, int count)
@@ -33,8 +28,23 @@ public class Weapon : MonoBehaviour
             PlaceWeapon();
     }
 
-    void Initialize()
+    public void Initialize(ItemData itemData)
     {
+        name = "Weapon" + itemData.itemType;
+        transform.parent = player.transform;
+        transform.localPosition = Vector3.zero;
+
+        id = itemData.itemId;
+        damage = itemData.baseDamage;
+        count = itemData.baseCount;
+        for (int i = 0; i<GameManager.Instance.poolManager.prefabs.Length; i++)
+        {
+            if(itemData.projectile == GameManager.Instance.poolManager.prefabs[i])
+            {
+                prefabId = i;
+                break;
+            }
+        }
         switch (id)
         {
             case 0:
