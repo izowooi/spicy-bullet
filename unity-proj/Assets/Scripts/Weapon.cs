@@ -26,6 +26,8 @@ public class Weapon : MonoBehaviour
 
         if (id == 0)
             PlaceWeapon();
+        
+        player.BroadcastMessage("ApplyGear", SendMessageOptions.DontRequireReceiver);
     }
 
     public void Initialize(ItemData itemData)
@@ -48,13 +50,15 @@ public class Weapon : MonoBehaviour
         switch (id)
         {
             case 0:
-                speed = -150;
+                speed = 150;
                 PlaceWeapon();
                 break;
             default:
                 intervalFire = 0.3f;
                 break;
         }
+        
+        player.BroadcastMessage("ApplyGear", SendMessageOptions.DontRequireReceiver);
     }
 
     private float timer = 0f;
