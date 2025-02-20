@@ -15,12 +15,39 @@ public class Item : MonoBehaviour
 
     private Image icon;
     private TextMeshProUGUI textLevel;
+    private TextMeshProUGUI textName;
+    private TextMeshProUGUI textDesc;
     
     private void Awake()
     {
         icon = transform.Find("Icon").GetComponent<Image>();
         icon.sprite = itemData.itemIcon;
-        textLevel = transform.Find("Level").GetComponent<TextMeshProUGUI>();
+        TextMeshProUGUI[] texts = GetComponentsInChildren<TextMeshProUGUI>();
+        textLevel = texts[0];
+        textName = texts[1];
+        textDesc = texts[2];
+        textName.text = itemData.itemName;
+    }
+
+    private void OnEnable()
+    {
+        textLevel.text = $"Lv.{level+1}";
+        textDesc.text = itemData.itemDesc;
+        switch (itemData.itemType)
+        {
+            case ItemData.ItemType.Melee:
+            case ItemData.ItemType.Range:
+                textDesc.text = string.Format(itemData.itemDesc, itemData.damages[level] * 100, itemData.counts[level]);
+                break;
+            case ItemData.ItemType.Glove:
+            case ItemData.ItemType.Shoe:
+                textDesc.text = string.Format(itemData.itemDesc, itemData.damages[level] * 100);
+                break;
+            case ItemData.ItemType.Heal:
+                textDesc.text = itemData.itemDesc;
+                break;
+                
+        }
     }
 
     private void LateUpdate()
