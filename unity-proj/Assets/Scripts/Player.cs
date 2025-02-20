@@ -24,16 +24,22 @@ public class Player : MonoBehaviour
     
     private void FixedUpdate()
     {
+        if (!GameManager.Instance.isLive) return;
+        
         rigidbody2D.MovePosition(rigidbody2D.position + ( speed * Time.fixedDeltaTime * inputVector2 ) );
     }
     
     void OnMove(InputValue value)
     {
+        if (!GameManager.Instance.isLive) return;
+        
         inputVector2 = value.Get<Vector2>();
     }
 
     private void LateUpdate()
     {
+        if (!GameManager.Instance.isLive) return;
+        
         animator.SetFloat("Speed", inputVector2.magnitude);
         
         spriteRenderer.flipX = inputVector2.x switch

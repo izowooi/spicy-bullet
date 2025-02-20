@@ -7,6 +7,7 @@ using UnityEngine.Serialization;
 public class GameManager : MonoBehaviour
 {
     [Header(("게임 정보"))]
+    public bool isLive = true;
     public float gametime = 0f;
     public float maxTime = 20f;
     
@@ -21,6 +22,7 @@ public class GameManager : MonoBehaviour
     [Header(("오브젝트"))]
     public Player player;
     public PoolManager poolManager;
+    public LevelUp uiLevelUp;
     
     public static GameManager Instance { get; private set; }
     
@@ -32,18 +34,44 @@ public class GameManager : MonoBehaviour
         }
     }
 
+    private void Start()
+    {
+        health = maxHealth;
+        uiLevelUp.Select(0);
+    }
+
     private void Update()
     {
+        if (!isLive) return;
+        
         gametime += Time.deltaTime;
+        
+        if (gametime >= maxTime)
+        {
+            gametime = maxTime;
+        }
     }
     
     public void GetExp(int value)
     {
         exp += value;
-        if (exp >= nextExp[level])
+        if (exp >= nextExp[level])  
         {
             exp = 0;
             level++;
+            uiLevelUp.Show();
         }
+    }
+
+    public void Stop()
+    {
+        isLive = false;
+        Time.timeScale = 0;
+    }
+    
+    public void Resume()
+    {
+        isLive = true;
+        Time.timeScale = 1;
     }
 }

@@ -64,6 +64,8 @@ public class Weapon : MonoBehaviour
     private float timer = 0f;
     void Update()
     {
+        if (!GameManager.Instance.isLive) return;
+        
         switch (id)
         {
             case 0:
