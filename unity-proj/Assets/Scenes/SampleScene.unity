@@ -931,6 +931,18 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 1
         m_CallState: 2
+      - m_Target: {fileID: 1471913063}
+        m_TargetAssemblyTypeName: GameManager, Assembly-CSharp
+        m_MethodName: GameStart
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 1
+        m_CallState: 2
 --- !u!114 &333241500
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -13108,7 +13120,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d2cbd04fbb3584c009b5e06c8b18e2c7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  isLive: 1
+  isLive: 0
   gametime: 0
   maxTime: 20
   maxHealth: 100

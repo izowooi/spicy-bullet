@@ -34,10 +34,11 @@ public class GameManager : MonoBehaviour
         }
     }
 
-    private void Start()
+    public void GameStart()
     {
         health = maxHealth;
         uiLevelUp.Select(0);
+        isLive = true;
     }
 
     private void Update()
