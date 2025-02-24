@@ -24,7 +24,7 @@ public class GameManager : MonoBehaviour
     public Player player;
     public PoolManager poolManager;
     public LevelUp uiLevelUp;
-    public GameObject uiResult;
+    public GameResultUI uiResult;
     
     public static GameManager Instance { get; private set; }
     
@@ -34,13 +34,14 @@ public class GameManager : MonoBehaviour
         {
             Instance = this;
         }
+        uiResult.gameObject.SetActive(false);
     }
 
     public void GameStart()
     {
         health = maxHealth;
         uiLevelUp.Select(0);
-        isLive = true;
+        Resume();
     }
     
     public void GameOver()
@@ -53,7 +54,24 @@ public class GameManager : MonoBehaviour
         isLive = false;
         yield return new WaitForSeconds(0.5f);
         
-        uiResult.SetActive(true);
+        uiResult.gameObject.SetActive(true);
+        uiResult.Lose();
+        
+        Stop();
+    }
+
+    public void GameWin()
+    {
+        StartCoroutine(GameWinCoroutine());
+    }
+    
+    IEnumerator GameWinCoroutine()
+    {
+        isLive = false;
+        yield return new WaitForSeconds(0.5f);
+        
+        uiResult.gameObject.SetActive(true);
+        uiResult.Win();
         
         Stop();
     }
@@ -72,11 +90,14 @@ public class GameManager : MonoBehaviour
         if (gametime >= maxTime)
         {
             gametime = maxTime;
+            GameWin();
         }
     }
     
     public void GetExp(int value)
     {
+        if(!isLive) return;
+        
         exp += value;
         if (exp >= nextExp[level])  
         {
